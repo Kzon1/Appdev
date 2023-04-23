@@ -26,11 +26,11 @@ namespace AppDev.Data
 
             var userManager = sp.GetRequiredService<UserManager<ApplicationUser>>();
 
-            if (await userManager.FindByEmailAsync("admin@g.c") == null)
+            if (await userManager.FindByEmailAsync("admin@gmail.com") == null)
             {
                 var admin = new ApplicationUser()
                 {
-                    UserName = "admin@g.c",
+                    UserName = "admin@gmail.com",
                     FullName = "Administrator",
                     HomeAddress = "",
                     EmailConfirmed= true,

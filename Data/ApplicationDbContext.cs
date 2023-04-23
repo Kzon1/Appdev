@@ -10,5 +10,18 @@ namespace AppDev.Data
             : base(options)
         {
         }
+
+        public DbSet<Category> Categories { get; set; } = null!;
+
+        public DbSet<Book> Books { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Category>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+                
+            base.OnModelCreating(builder);
+        }
     }
 }
