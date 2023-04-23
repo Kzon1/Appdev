@@ -18,5 +18,10 @@ namespace AppDev.Models
         [Range(0, double.MaxValue, ErrorMessage = "Price must be bigger than zero.")]
         [DataType(DataType.Currency)]
         public double Price { get; set; }
+
+        public string StoreId { get; set; } = null!;
+
+        [ValidateNever]
+        public Store Store { get; set; } = null!;
     }
 }
