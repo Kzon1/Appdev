@@ -1,6 +1,7 @@
 ﻿using AppDev.Helpers;
 using AppDev.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDev.Data
 {
@@ -26,18 +27,45 @@ namespace AppDev.Data
 
             var userManager = sp.GetRequiredService<UserManager<ApplicationUser>>();
 
-            if (await userManager.FindByEmailAsync("admin@gmail.com") == null)
+            if (await userManager.FindByNameAsync("admin@gmail.com") == null)
             {
                 var admin = new ApplicationUser()
                 {
                     UserName = "admin@gmail.com",
                     FullName = "Administrator",
                     HomeAddress = "",
-                    EmailConfirmed= true,
+                    EmailConfirmed = true,
                 };
                 await userManager.CreateAsync(admin, "Asd@123");
 
                 await userManager.AddToRoleAsync(admin, "Admin");
+            }
+
+            var db = sp.GetRequiredService<ApplicationDbContext>();
+
+            List<Category> categories = new()
+            {
+                new Category()
+                {
+                    Name = "Truyen Tranh"
+                },
+                new Category()
+                {
+                    Name = "Co tich",
+                },
+                new Category()
+                {
+                    Name= "Tieu thuyet"
+                }
+            };
+
+            foreach (var category in categories)
+            {
+                if (!await db.Categories.AnyAsync(c => c.Name == category.Name))
+                {
+                    await db.Categories.AddAsync(category);
+                    await db.SaveChangesAsync();
+                }
             }
         }
     }
