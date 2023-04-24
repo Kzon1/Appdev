@@ -9,6 +9,6 @@ namespace AppDev.Models
         public string FullName { get; set; } = null!;
 
         [StringLength(100)]
-        public string HomeAddress { get; set; }= null!;
+        public string HomeAddress { get; set; } = null!;
     }
 }

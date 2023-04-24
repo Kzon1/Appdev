@@ -4,6 +4,7 @@ using AppDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221221142005_AddOrderCart")]
+    partial class AddOrderCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +128,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("AppDev.Models.CartItem", b =>
@@ -144,7 +146,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("AppDev.Models.Category", b =>
@@ -165,7 +167,7 @@ namespace AppDev.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("AppDev.Models.Order", b =>
@@ -213,7 +215,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AppDev.Models.OrderItem", b =>
@@ -234,7 +236,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("AppDev.Models.RequestCategory", b =>
@@ -265,7 +267,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreOwnerId");
 
-                    b.ToTable("RequestCategories", (string)null);
+                    b.ToTable("RequestCategories");
                 });
 
             modelBuilder.Entity("AppDev.Models.Store", b =>
@@ -279,7 +281,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
