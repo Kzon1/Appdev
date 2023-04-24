@@ -22,13 +22,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                        </li>
                         @if (User.IsInRole(Roles.StoreOwner))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="StoreOwner" asp-action="Index">Store</a>
+                                <a class="nav-link text-dark" asp-area="StoreOwner" asp-controller="Store" asp-action="Index">Store</a>
                             </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="StoreBooks" asp-action="Index">Store Books</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="StoreOwner" asp-controller="Books" asp-action="Index">Store Books</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="StoreOwner" asp-controller="Orders" asp-action="Index">Orders</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="StoreOwner" asp-controller="RequestCategories" asp-action="Index">Requests New Category</a>
@@ -40,8 +46,19 @@
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="RequestCategories" asp-action="Index">Requests New Category</a>
                             </li>
                         }
-                     
+                        @if (User.IsInRole(Roles.User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </li>
+                        }
                     </ul>
+                    @if (User.Identity?.IsAuthenticated is false or null || User.IsInRole(Roles.User))
+                    {
+                        <div class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                        </div>
+                    }
                     <partial name="_LoginPartial" />
                 </div>
             </div>

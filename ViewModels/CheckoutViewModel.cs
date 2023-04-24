@@ -17,7 +17,7 @@ namespace AppDev.ViewModels
         [StringLength(50)]
         public string Name { get; set; } = null!;
 
-        [Display(Name ="Phone Number")]
+        [Display(Name = "Phone Number")]
         [StringLength(20)]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; } = null!;

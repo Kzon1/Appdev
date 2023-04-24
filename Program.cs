@@ -1,9 +1,15 @@
 using AppDev.Data;
+using AppDev.Helpers;
 using AppDev.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (!Directory.Exists(FileUploadHelper.BookImageBaseDirectory))
+{
+    Directory.CreateDirectory(FileUploadHelper.BookImageBaseDirectory);
+}
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
