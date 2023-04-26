@@ -1,7 +1,6 @@
 ﻿using AppDev.Data;
 using AppDev.Helpers;
 using AppDev.Models;
-using AppDev.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,21 +32,13 @@ namespace AppDev.Areas.StoreOwner.Controllers
             }
         }
 
-        public async Task<IActionResult> Index(SearchViewModel? model)
+        // GET: Orders
+        public async Task<IActionResult> Index()
         {
-            var query = context.Orders
-                .Include(o => o.Customer)
-                .AsQueryable()
-                .Where(o => o.StoreId == StoreOwnerId);
-
-            if (model != null && !string.IsNullOrWhiteSpace(model.KeyWord))
-            {
-                var keyword = model.KeyWord.Trim().ToUpper();
-                query = query.Where(u => u.Customer.NormalizedEmail.Contains(keyword));
-            }
-
-            var orders = await query.ToListAsync();
-
+            var orders = await context.Orders
+                .Include(o => o.Store)
+                .Where(o => o.StoreId == StoreOwnerId)
+                .ToListAsync();
             return View(orders);
         }
 
