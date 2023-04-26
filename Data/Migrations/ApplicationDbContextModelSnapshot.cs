@@ -17,7 +17,7 @@ namespace AppDev.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -108,9 +108,6 @@ namespace AppDev.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -126,10 +123,6 @@ namespace AppDev.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.HasIndex("StoreId");
 
@@ -173,39 +166,6 @@ namespace AppDev.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Categories", (string)null);
-                });
-
-            modelBuilder.Entity("AppDev.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Extension")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Href")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Image", (string)null);
                 });
 
             modelBuilder.Entity("AppDev.Models.Order", b =>
@@ -467,10 +427,6 @@ namespace AppDev.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppDev.Models.Image", "Image")
-                        .WithOne("Book")
-                        .HasForeignKey("AppDev.Models.Book", "ImageId");
-
                     b.HasOne("AppDev.Models.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
@@ -478,8 +434,6 @@ namespace AppDev.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Image");
 
                     b.Navigation("Store");
                 });
@@ -617,12 +571,6 @@ namespace AppDev.Data.Migrations
             modelBuilder.Entity("AppDev.Models.Category", b =>
                 {
                     b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("AppDev.Models.Image", b =>
-                {
-                    b.Navigation("Book")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("AppDev.Models.Order", b =>
