@@ -4,6 +4,7 @@ using AppDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221220104659_AlterRequestCategory")]
+    partial class AlterRequestCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,25 +128,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Books", (string)null);
-                });
-
-            modelBuilder.Entity("AppDev.Models.CartItem", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookId", "CustomerId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("AppDev.Models.Category", b =>
@@ -165,76 +149,7 @@ namespace AppDev.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
-                });
-
-            modelBuilder.Entity("AppDev.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("StoreId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("StoreId");
-
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("AppDev.Models.OrderItem", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookId", "OrderId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("AppDev.Models.RequestCategory", b =>
@@ -265,7 +180,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreOwnerId");
 
-                    b.ToTable("RequestCategories", (string)null);
+                    b.ToTable("RequestCategories");
                 });
 
             modelBuilder.Entity("AppDev.Models.Store", b =>
@@ -279,7 +194,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -438,63 +353,6 @@ namespace AppDev.Data.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("AppDev.Models.CartItem", b =>
-                {
-                    b.HasOne("AppDev.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AppDev.Models.ApplicationUser", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("AppDev.Models.Order", b =>
-                {
-                    b.HasOne("AppDev.Models.ApplicationUser", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppDev.Models.Store", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Store");
-                });
-
-            modelBuilder.Entity("AppDev.Models.OrderItem", b =>
-                {
-                    b.HasOne("AppDev.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AppDev.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("AppDev.Models.RequestCategory", b =>
                 {
                     b.HasOne("AppDev.Models.ApplicationUser", "StoreOwner")
@@ -571,11 +429,6 @@ namespace AppDev.Data.Migrations
             modelBuilder.Entity("AppDev.Models.Category", b =>
                 {
                     b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("AppDev.Models.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }
