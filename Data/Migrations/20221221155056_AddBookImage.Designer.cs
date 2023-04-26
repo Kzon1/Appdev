@@ -4,6 +4,7 @@ using AppDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221221155056_AddBookImage")]
+    partial class AddBookImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.11")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -108,6 +110,9 @@ namespace AppDev.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -124,9 +129,13 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ImageId")
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
+
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("AppDev.Models.CartItem", b =>
@@ -144,7 +153,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("AppDev.Models.Category", b =>
@@ -165,7 +174,40 @@ namespace AppDev.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AppDev.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Href")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("AppDev.Models.Order", b =>
@@ -213,7 +255,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AppDev.Models.OrderItem", b =>
@@ -234,7 +276,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("AppDev.Models.RequestCategory", b =>
@@ -265,7 +307,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasIndex("StoreOwnerId");
 
-                    b.ToTable("RequestCategories", (string)null);
+                    b.ToTable("RequestCategories");
                 });
 
             modelBuilder.Entity("AppDev.Models.Store", b =>
@@ -279,7 +321,7 @@ namespace AppDev.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -427,6 +469,10 @@ namespace AppDev.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppDev.Models.Image", "Image")
+                        .WithOne("Book")
+                        .HasForeignKey("AppDev.Models.Book", "ImageId");
+
                     b.HasOne("AppDev.Models.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
@@ -434,6 +480,8 @@ namespace AppDev.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Image");
 
                     b.Navigation("Store");
                 });
@@ -571,6 +619,12 @@ namespace AppDev.Data.Migrations
             modelBuilder.Entity("AppDev.Models.Category", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("AppDev.Models.Image", b =>
+                {
+                    b.Navigation("Book")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AppDev.Models.Order", b =>
