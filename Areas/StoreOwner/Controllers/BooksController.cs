@@ -89,7 +89,7 @@ namespace AppDev.Areas.StoreOwner.Controllers
                     CategoryId = model.CategoryId,
                     Image = new(model.UploadImage.FileName, extension),
                 };
-                _context.Add(book);                
+                _context.Add(book);
 
                 //var randomFileName = $"{Path.GetRandomFileName()}.{extension}";
                 //var imagePath = Path.Combine(FileUploadHelper.BookImageDirectory, randomFileName);

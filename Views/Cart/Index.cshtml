@@ -12,7 +12,7 @@
 <table class="table">
     <thead>
         <tr>
-            
+
             <th>
                 Book Title
             </th>
@@ -22,6 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Book.Price)
             </th>
+            <th>
+                Total
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -29,9 +32,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Book.Title)
+                    <a asp-action="Details" asp-controller="Books" asp-route-id="@item.BookId" class="text-decoration-none text-black">
+                        @Html.DisplayFor(modelItem => item.Book.Title)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
@@ -40,9 +45,7 @@
                     @Html.DisplayFor(modelItem => item.Book.Price)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    $@(item.Book.Price * item.Quantity)
                 </td>
             </tr>
         }

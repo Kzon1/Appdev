@@ -8,14 +8,14 @@ namespace AppDev.Models
         public int Id { get; set; }
 
         public string StoreOwnerId { get; set; } = null!;
-        
+
         [ValidateNever]
         [Display(Name = "Store Owner")]
         public ApplicationUser StoreOwner { get; set; } = null!;
 
         public string Name { get; set; } = null!;
 
-        [Display(Name = "Is Approved")]    
+        [Display(Name = "Is Approved")]
         public bool? IsApproved { get; set; } = null;
 
         [StringLength(255)]

@@ -74,7 +74,7 @@ namespace AppDev.Data
                     .HasForeignKey(e => e.BookId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
-                
+
             base.OnModelCreating(builder);
         }
     }

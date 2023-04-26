@@ -1,4 +1,5 @@
 ﻿using AppDev.Data;
+using AppDev.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,21 @@ public class BooksController : Controller
     }
 
     // GET: Books
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(SearchViewModel? model)
     {
-        var applicationDbContext = _context.Books
+        var query = _context.Books
             .Include(b => b.Category)
-            .Include(b => b.Image);
-        return View(await applicationDbContext.ToListAsync());
+            .Include(b => b.Image)
+            .AsQueryable();
+
+        if (model != null && !string.IsNullOrWhiteSpace(model.KeyWord))
+        {
+            var keyword = model.KeyWord.Trim().ToLower();
+            query = query.Where(b => b.Title.ToLower().Contains(keyword)
+                || b.Category.Name.ToLower().Contains(keyword));
+        }
+
+        return View(await query.ToListAsync());
     }
 
     // GET: Books/Details/5
