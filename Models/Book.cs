@@ -23,5 +23,9 @@ namespace AppDev.Models
 
         [ValidateNever]
         public Store Store { get; set; } = null!;
+
+        public int? ImageId { get; set; }
+
+        public Image? Image { get; set; } = null!;
     }
 }

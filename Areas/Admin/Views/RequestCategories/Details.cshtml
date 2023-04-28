@@ -48,6 +48,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Approve" asp-route-id="@Model?.Id">Approve</a> |
+    @if(Model.IsApproved == null)
+    {
+    <a asp-action="Approve" asp-route-id="@Model?.Id">Approve |</a> ; 
+    }
     <a asp-action="Index">Back to List</a>
 </div>

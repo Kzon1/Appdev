@@ -52,7 +52,9 @@
             </dd>
         </dl>
         <div>
+            @if (User.IsInRole(Roles.User)){
             <button id="addToCartBtn" class="btn btn-primary px-1" onclick="addItem(@Model.Id, 1)">Add</button>
+            }
             <br />
             <a asp-action="Index">Back to List</a>
         </div>

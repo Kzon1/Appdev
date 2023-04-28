@@ -67,7 +67,7 @@ namespace AppDev.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve(int id, [Bind("Id,Name,StoreOwnerId,IsAppproved,Message")] RequestCategory requestCategory)
+        public async Task<IActionResult> Approve(int id, [Bind("Id,Name,StoreOwnerId,IsApproved,Message")] RequestCategory requestCategory)
         {
             if (id != requestCategory.Id)
             {
@@ -88,7 +88,6 @@ namespace AppDev.Areas.Admin.Controllers
                     {
                         Name = requestCategory.Name,
                     });
-
                 }
 
                 _context.Update(requestCategory);
