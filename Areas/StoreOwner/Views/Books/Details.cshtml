@@ -17,6 +17,16 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Authors)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach(var author in Model.Authors){
+            <nobr>| </nobr>
+            @Html.DisplayFor(model => author.Name)
+            <nobr> |</nobr>
+            }
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Category)
         </dt>
         <dd class="col-sm-10">

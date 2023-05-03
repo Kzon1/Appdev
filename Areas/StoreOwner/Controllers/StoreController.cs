@@ -56,7 +56,6 @@ namespace AppDev.Areas.StoreOwner.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Store store)
         {
             if (ModelState.IsValid)

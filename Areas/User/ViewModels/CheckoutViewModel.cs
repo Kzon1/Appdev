@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace AppDev.ViewModels
+namespace AppDev.Areas.User.ViewModels
 {
     public class CheckoutViewModel
     {

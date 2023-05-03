@@ -36,7 +36,7 @@ namespace AppDev.Data
                     HomeAddress = "",
                     EmailConfirmed = true,
                 };
-                await userManager.CreateAsync(admin, "Asd@123");
+                await userManager.CreateAsync(admin, "Am123#");
 
                 await userManager.AddToRoleAsync(admin, "Admin");
             }
@@ -47,15 +47,15 @@ namespace AppDev.Data
             {
                 new Category()
                 {
-                    Name = "Truyen Tranh"
+                    Name = "Horror"
                 },
                 new Category()
                 {
-                    Name = "Co tich",
+                    Name = "Adventure",
                 },
                 new Category()
                 {
-                    Name= "Tieu thuyet"
+                    Name= "Comedy"
                 }
             };
 

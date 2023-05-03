@@ -8,26 +8,14 @@ namespace AppDev.Models
 
         public string CustomerId { get; set; } = null!;
         public ApplicationUser Customer { get; set; } = null!;
-
-        [StringLength(255)]
         public string Address { get; set; } = null!;
-
-        [StringLength(50)]
         public string FullName { get; set; } = null!;
-
-        [StringLength(20)]
-        public string PhoneNumber { get; set; } = null!; public string StoreId { get; set; } = null!;
-
-        [StringLength(20)]
+        public string PhoneNumber { get; set; } = null!; 
+        public string StoreId { get; set; } = null!;
         public string Status { get; set; } = "Pending";
-
         public Store Store { get; set; } = null!;
-
-        [DataType(DataType.Currency)]
         public double TotalPrice { get; set; }
-
         public List<OrderItem> OrderItems { get; set; } = null!;
-
         private Order() { }
 
         public Order(string customerId, string storeId, IEnumerable<CartItem> cartItems)

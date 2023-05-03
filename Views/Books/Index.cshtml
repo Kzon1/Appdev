@@ -1,23 +1,31 @@
 ﻿@model IEnumerable<AppDev.Models.Book>
 
-@{
+    @{
     ViewData["Title"] = "Books";
-}
+    }
 
-<h1>List of books</h1>
+    <h1>List of books</h1>
 
-<div class="row row-cols-xl-6 row-cols-lg-5 row-cols-md-4 row-cols-sm-3 row-cols-2">
-    @foreach (var item in Model)
+    <div class="row row-cols-xl-6 row-cols-lg-5 row-cols-md-4 row-cols-sm-3 row-cols-2">
+        @foreach (var item in Model)
     {
         <div class="col">
             <div class="card h-100">
                 <img src="@item.Image?.Href" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">Price: <span class="fw-bold">&#36;@item.Price</span></p>
+                    <p>
+                        Author: @foreach(var author in @item.Authors){
+                        <nobr>| </nobr>  @author.Name  <nobr> |</nobr>
+                    }
+                    </p>
+                    <p class="card-text">Price: <span class="fw-bold">@item.Price VND</span></p>
                 </div>
                 <div class="card-footer">
+                    @if (User.IsInRole(Roles.User))
+                    {
                     <button name="addToCartBtn" class="btn btn-primary px-1" onclick="addItem(@item.Id, 1)">Add</button>
+                    }
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
                 </div>
             </div>
@@ -35,20 +43,21 @@
             </div>
         </div>
     }
-</div>
-@section Scripts {
-    <script src="~/js/cart.js" asp-append-version="true"></script>
-    <script type="text/javascript">
-        var addButtons = document.getElementsByName('addToCartBtn')
-        var toastLiveExample = document.getElementById('liveToast')
-        if (addButtons) {
-            addButtons.forEach(function (i) {
-                i.addEventListener('click', function () {
-                    var toast = new bootstrap.Toast(toastLiveExample)
+    </div>
+    @section Scripts {
+        <script src="~/js/cart.js" asp-append-version="true"></script>
+        <script type="text/javascript">
+            var addButtons = document.getElementsByName('addToCartBtn')
+            var toastLiveExample = document.getElementById('liveToast')
+            if (addButtons) {
+                addButtons.forEach(function (i) {
+                    i.addEventListener('click', function () {
+                        var toast = new bootstrap.Toast(toastLiveExample)
 
-                    toast.show()
+                        toast.show()
+                    })
                 })
-            })
-        }
-    </script>
-}
+            }
+        </script>
+    }
+

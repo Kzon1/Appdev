@@ -20,6 +20,7 @@ public class BooksController : Controller
         var query = _context.Books
             .Include(b => b.Category)
             .Include(b => b.Image)
+            .Include(b => b.Authors)
             .AsQueryable();
 
         if (model != null && !string.IsNullOrWhiteSpace(model.KeyWord))
@@ -44,6 +45,7 @@ public class BooksController : Controller
             .Include(b => b.Category)
             .Include(b => b.Store)
             .Include(b => b.Image)
+            .Include(b => b.Authors)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (book == null)
         {

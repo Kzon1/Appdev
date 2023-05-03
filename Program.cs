@@ -12,7 +12,7 @@ if (!Directory.Exists(FileUploadHelper.BookImageBaseDirectory))
 }
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("BookShopConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -54,7 +54,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
       name: "areas",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+      pattern: "{area:exists}/{controller=Books}/{action=Index}/{id?}"
     );
 });
 

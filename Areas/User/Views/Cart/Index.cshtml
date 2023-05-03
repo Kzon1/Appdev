@@ -1,0 +1,61 @@
+﻿@model IEnumerable<AppDev.Models.CartItem>
+
+    @{
+    ViewData["Title"] = "Index";
+    }
+
+    <h1>Cart</h1>
+
+    <p>
+        <a asp-action="Checkout" class="btn btn-primary">Checkout</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>
+                    Book Title
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Book.Price)
+                </th>
+                <th>
+                    Total
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    <a asp-area="" asp-action="Details" asp-controller="Books" asp-route-id="@item.BookId" class="text-decoration-none text-black">
+                        @Html.DisplayFor(modelItem => item.Book.Title)
+                    </a>
+                </td>
+                <td>
+                    <button name="removefromCartBtn" class="btn btn-primary px-1" onclick="removeItem(@item.BookId,@item.Book.Price)">-</button>
+                    <input style="text-align:center" type="text" size="2" id="@item.BookId" Value="@item.Quantity" onblur="inputQuantityValue(@item.BookId,this.value,@item.Book.Price)"/>
+                    <button name="addToCartBtn" class="btn btn-primary px-1" onclick="addItem(@item.BookId,@item.Book.Price)">+</button>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Price) <nobr> VND</nobr>
+                </td>
+                <td>
+                    <p id="Total-@item.BookId">@(item.Book.Price*item.Quantity)</p><p> VND</p>
+                </td>
+            </tr>
+
+        }
+        </tbody>
+    </table>
+    @section Scripts {
+        <script src="~/js/cart.js" asp-append-version="true"></script>
+
+    }
+

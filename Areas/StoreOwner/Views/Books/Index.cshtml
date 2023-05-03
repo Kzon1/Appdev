@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppDev.Models.Book>
+﻿    @model IEnumerable<AppDev.Models.Book>
 
 @{
     ViewData["Title"] = "Index";
@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Authors)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,9 +40,16 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @foreach(var auth in item.Authors){
+                <nobr>| </nobr>
+                @Html.DisplayFor(modelItem => auth.Name)
+                <nobr> |</nobr>
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" class="btn btn-primary"asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" class= "btn btn-primary" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" class= "btn btn-danger" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

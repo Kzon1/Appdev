@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AppDev.Models;
 
 namespace AppDev.Areas.StoreOwner.ViewModels
 {
@@ -8,8 +9,10 @@ namespace AppDev.Areas.StoreOwner.ViewModels
         public string Title { get; set; } = null!;
 
         public int CategoryId { get; set; }
+        public int[] Authors {get; set;}
 
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be bigger than zero.")]
+
+        [Range(0, double.MaxValue, ErrorMessage = "Invalid Input")]
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 

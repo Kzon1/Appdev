@@ -11,8 +11,6 @@ namespace AppDev.Models
         public Book Book { get; set; } = null!;
 
         public int Quantity { get; set; }
-
-        [DataType(DataType.Currency)]
         public double Price { get; set; }
     }
 }

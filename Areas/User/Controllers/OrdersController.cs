@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppDev.Controllers
+namespace AppDev.Areas.User.Controllers
 {
+    [Area("User")]
     [Authorize(Roles = Roles.User)]
     public class OrdersController : Controller
     {

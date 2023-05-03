@@ -1,14 +1,16 @@
 ﻿using AppDev.Data;
 using AppDev.Models;
-using AppDev.ViewModels;
+using AppDev.Helpers;
+using AppDev.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppDev.Controllers
+namespace AppDev.Areas.User.Controllers
 {
-    [Authorize]
+    [Area("User")]
+    [Authorize(Roles = Roles.User)]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -31,7 +33,6 @@ namespace AppDev.Controllers
             }
         }
 
-        // GET: Carts
         public async Task<IActionResult> Index()
         {
             var items = await context.CartItems
@@ -40,8 +41,29 @@ namespace AppDev.Controllers
                 .ToListAsync();
             return View(items);
         }
+        public async Task<IActionResult> ItemQuantity(int? bookId)
+        {
+            var book = await context.Books.FindAsync(bookId);
+            var item = await context.CartItems
+                .FirstOrDefaultAsync(ci => ci.CustomerId == CustomerId && ci.BookId == book.Id);
+            return Ok(item.Quantity);
+        }
 
-        // GET: Carts/Create
+        public async Task<IActionResult> RemoveItem(int? bookId, int quantity = 1)
+        {        
+            var book = await context.Books.FindAsync(bookId);
+
+            if (book == null)
+                return BadRequest();
+
+            var item = await context.CartItems
+                .FirstOrDefaultAsync(ci => ci.CustomerId == CustomerId && ci.BookId == book.Id);
+                item.Quantity -= quantity;
+
+            await context.SaveChangesAsync();
+
+            return Ok(item);
+        }
         public async Task<IActionResult> AddItem(int? bookId, int quantity = 1)
         {
             if (bookId == null || quantity <= 0)
@@ -73,6 +95,40 @@ namespace AppDev.Controllers
             await context.SaveChangesAsync();
 
             return Ok(item);
+        }
+        public async Task<IActionResult> InputQuantity(int? bookId, int quantity)
+        {
+            if (bookId == null || quantity <= 0)
+                return BadRequest();
+
+            var book = await context.Books.FindAsync(bookId);
+
+            if (book == null)
+                return BadRequest();
+
+            var item = await context.CartItems
+                .FirstOrDefaultAsync(ci => ci.CustomerId == CustomerId && ci.BookId == book.Id);
+                item.Quantity = quantity;
+
+            await context.SaveChangesAsync();
+
+            return Ok(item);
+        }
+        public async Task<IActionResult> GetTotalPrice(int? bookId)
+        {
+            if (bookId == null)
+                return BadRequest();
+
+            var book = await context.Books.FindAsync(bookId);
+
+            if (book == null)
+                return BadRequest();
+
+            var item = await context.CartItems
+                .FirstOrDefaultAsync(ci => ci.CustomerId == CustomerId && ci.BookId == book.Id);
+
+
+            return Ok(item.Book.Price*item.Quantity);
         }
 
         public async Task<IActionResult> Checkout()
@@ -158,7 +214,7 @@ namespace AppDev.Controllers
             return View("CheckoutSuccess");
         }
 
-        public async Task<IActionResult> RemoveItem(int? bookId, int? quantity)
+        public async Task<IActionResult> RemoveAllItem(int? bookId, int? quantity)
         {
             if (bookId == null || quantity <= 0)
                 return BadRequest();

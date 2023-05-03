@@ -40,7 +40,7 @@ namespace AppDev.Areas.StoreOwner.Controllers
                 .Include(b => b.Category)
                 .Where(b => b.StoreId == StoreId);
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(await applicationDbContext.Include(x => x.Authors).ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -53,6 +53,7 @@ namespace AppDev.Areas.StoreOwner.Controllers
             var book = await _context.Books
                 .Include(b => b.Category)
                 .Include(b => b.Image)
+                .Include(b => b.Authors)
                 .FirstOrDefaultAsync(b => b.Id == id && b.StoreId == StoreId);
 
             if (book == null)
@@ -67,6 +68,7 @@ namespace AppDev.Areas.StoreOwner.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["AuthorID"] = new MultiSelectList(_context.Authors.ToList(),"Id","Name");
             var model = new BookCreate()
             {
                 StoreId = StoreId,
@@ -81,19 +83,22 @@ namespace AppDev.Areas.StoreOwner.Controllers
             if (ModelState.IsValid)
             {
                 var extension = Path.GetExtension(model.UploadImage.FileName);
+                var auth = new List<Author>();
+                    foreach(int authorID in model.Authors)
+                        {
+                            var newAut = _context.Authors.FirstOrDefault(x => x.Id == authorID);
+                            auth.Add(newAut);
+                        }
                 var book = new Book()
                 {
                     Title = model.Title,
                     Price = model.Price,
                     StoreId = model.StoreId,
+                    Authors = auth,
                     CategoryId = model.CategoryId,
                     Image = new(model.UploadImage.FileName, extension),
                 };
                 _context.Add(book);
-
-                //var randomFileName = $"{Path.GetRandomFileName()}.{extension}";
-                //var imagePath = Path.Combine(FileUploadHelper.BookImageDirectory, randomFileName);
-                //var imageHref = Path.Combine(FileUploadHelper.BookImageHref, randomFileName);
                 using (var stream = new FileStream(book.Image.Path, FileMode.CreateNew))
                 {
                     await model.UploadImage.CopyToAsync(stream);

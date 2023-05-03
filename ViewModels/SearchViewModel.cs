@@ -2,7 +2,6 @@
 {
     public class SearchViewModel
     {
-        public string? Type { get; set; }
         public string Action { get; private set; } = "";
 
         public string KeyWord { get; set; } = null!;
